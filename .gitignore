@@ -1,0 +1,4 @@
+# Local reference clones, model weights and build output (multi-GB, not ours to redistribute)
+Data/
+*.gguf
+build-*/
