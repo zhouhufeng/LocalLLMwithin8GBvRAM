@@ -4,11 +4,13 @@
 #
 # Usage: ./build_llamacpp_sm61.sh /path/to/Bonsai-demo
 # Env:   CUDA_ARCH (default 61)  JOBS (default 6)  CUDA_HOST_CXX (e.g. g++-12, optional)
+#        TARGETS (default "llama-server"; add llama-kv-mean-center for make_kv_bias.sh)
 set -euo pipefail
 
 DEMO="$(cd "${1:?usage: $0 /path/to/Bonsai-demo}" && pwd)"
 ARCH="${CUDA_ARCH:-61}"
 JOBS="${JOBS:-6}"
+TARGETS="${TARGETS:-llama-server}"
 SRC="$DEMO/llama.cpp"
 BUILD="$SRC/build-sm$ARCH"
 
@@ -33,7 +35,8 @@ cmake -S "$SRC" -B "$BUILD" -G Ninja \
     -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="$ARCH" \
     -DCMAKE_CUDA_COMPILER="$(command -v nvcc)" \
     -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF "${EXTRA[@]}"
-cmake --build "$BUILD" --target llama-server -j "$JOBS"
+# shellcheck disable=SC2086
+cmake --build "$BUILD" --target $TARGETS -j "$JOBS"
 
 cd "$DEMO"
 if [ -d bin/cuda ] && [ ! -d bin/cuda.prebuilt-backup ]; then

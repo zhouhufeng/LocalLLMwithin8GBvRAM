@@ -42,9 +42,11 @@ Both run 100% on the GPU, both expose an OpenAI-compatible API and support tool 
 5. **Free the GPU first.** Only one model fits at a time. An idle Ollama model keeps holding VRAM for 5 minutes (`ollama stop <model>`).
 6. **Thinking mode is the main source of latency.** A haiku took 41 s on the 27B because it "thought" for 800 tokens. Turn reasoning off/low for chatty use.
 
-## Can it power Claude Code / coding agents?
+## Can it power local agents / Claude Code?
 
-The llama.cpp server also speaks the Anthropic `/v1/messages` API, and a tool-call test worked. **But it isn't practical on this card.** A coding agent's system prompt and tool definitions alone are ~15–25k tokens, more than the 8k context that fits. At ~85 tok/s prompt reading, the first turn would also take minutes. Use these setups for chat, Q&A, summarizing and light tool use.
+Yes, with limits. The llama.cpp server speaks both the OpenAI API (`/v1`) and the Anthropic API (`/v1/messages`), and a tool-call test through the Anthropic endpoint worked. The catch is **context**: agents need 20k+ tokens and 8 GB only fits 8k with the default cache. A **4-bit KV cache** (`BONSAI_KV4=1 BONSAI_CTX=32768`) should stretch it to ~32k. Lighter agents like aider fit best. Claude Code works but takes minutes on its first turn.
+
+**→ [Agents & Claude Code guide](docs/agents-and-claude-code.md)**
 
 ## Repo layout
 
@@ -52,6 +54,7 @@ The llama.cpp server also speaks the Anthropic `/v1/messages` API, and a tool-ca
 README.md                          this overview
 docs/method1-bonsai-27b-llamacpp.md   step-by-step for the 27B route (with troubleshooting)
 docs/method2-ollama-9b.md             step-by-step for the Ollama route
+docs/agents-and-claude-code.md        power aider / Hermes / Claude Code with the 27B
 scripts/build_llamacpp_sm61.sh     build Prism ML's llama.cpp fork for GTX 10xx
 scripts/start_bonsai27b.sh         start the 27B chat server with 8 GB-safe settings
 scripts/bench_chat.sh              measure tok/s on any OpenAI-compatible endpoint
