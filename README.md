@@ -8,13 +8,13 @@ Running a capable local LLM on an **old GTX 1080 (8 GB, Pascal, 2016)**: two set
 | File size | 5.95 GB | 5.6 GB |
 | Engine | Prism ML's llama.cpp fork, **rebuilt from source for sm_61** | Stock Ollama |
 | VRAM used | 6.6–7.2 GB (context 8k) | 5.5 GB (context 8k) |
-| Generation speed | **~20 tok/s** | **~35 tok/s** |
+| Generation speed | **~20 tok/s** short tests, **~16 tok/s** in a long real chat | **~35 tok/s** |
 | Prompt reading | ~85 tok/s | ~260 tok/s |
 | Short Q&A, end to end | 5–10 s (thinking on) | ~4 s (thinking on) |
 | Setup effort | High: ~10 min compile + workaround | One command |
 | Best for | Smartest answers that fit on the card | Speed, convenience, longer prompts |
 
-**Verdict from daily use: both work great and both are fast enough for comfortable chat.** Pick Method 1 for the bigger, smarter model, or Method 2 for the quickest setup.
+**Verdict from real use: both give good answers at a comfortable speed.** In a longer real conversation in the web UI, the 27B gave high-quality answers at about **16 tok/s**, which is still faster than reading speed. Pick Method 1 for the bigger, smarter model, or Method 2 for the quickest setup.
 
 Both run 100% on the GPU, both expose an OpenAI-compatible API and support tool calling and thinking mode.
 

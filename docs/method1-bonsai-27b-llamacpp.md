@@ -79,8 +79,10 @@ VRAM after load: **6.6 GB** idle, **~7.2 GB** after chatting (of 8 GB).
 | Haiku (thought ~800 tokens) | 19 tok, 1.3 s | 801 tok @ 19.9 tok/s | 41.5 s |
 | 1,560-token prompt, thinking off | 18.4 s (**85 tok/s**) | 13.6 tok/s | ~20 s |
 
+**Real use:** in a longer chat in the web UI, it gave good, detailed answers at about **16 tok/s**. Speed drops a little as the conversation fills the context, but it's still faster than reading speed.
+
 Takeaways:
-- Generation at ~20 tok/s reads comfortably.
+- Generation at 16–20 tok/s reads comfortably.
 - **Thinking adds most of the waiting.** In the web UI, use the lightbulb button to set reasoning to Off/Low. Over the API, pass `"chat_template_kwargs": {"enable_thinking": false}`.
 - **Long pasted text is slow to ingest** (~20 s per page). Follow-ups in the same chat reuse the cache and are fast.
 - Text only. The vision projector (mmproj, +0.63 GB) doesn't leave room for context on 8 GB.
